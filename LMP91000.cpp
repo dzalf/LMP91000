@@ -538,11 +538,21 @@ void LMP91000::measureCell() const
     write(LMP91000_MODECN_REG, data);
 }
 
+
+void LMP91000::setTempReadMode(uint8_t mode) const{
+
+    uint8_t data = read(LMP91000_MODECN_REG);
+    data &= ~(0x07); //clears the first three bits
+    data |= (mode);
+    write(LMP91000_MODECN_REG, data);
+
+}
+
 //void LMP91000::getTemp() const
 void LMP91000::getTemp() const
 {
     uint8_t data = read(LMP91000_MODECN_REG);
-    data |= (0x07);
+    data |= (0x07);                             // This value is the same as LMP91000_OP_MODE_TIA_ON, why not using it?
     write(LMP91000_MODECN_REG, data);
 }
 
@@ -665,7 +675,3 @@ double LMP91000::getCurrent(uint16_t adcVal, double adc_ref, uint8_t adc_bits,
 {
     return (getVoltage(adcVal, adc_ref, adc_bits) - (adc_ref*TIA_ZERO[zero]))/extGain;
 }
-
-
-
-

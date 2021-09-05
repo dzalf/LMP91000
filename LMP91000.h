@@ -43,6 +43,8 @@
 #include "Arduino.h"
 #include "Wire.h"
 
+#warning "This is a work in progress. Custom clone of the LMP91000 library..." // dzalf 05/09/2021
+
 const double TEMP_INTERCEPT = 1555;
 const double TEMPSLOPE = -8;
 const uint8_t LMP91000_I2C_ADDRESS = 0X48;
@@ -127,6 +129,16 @@ private:
     
     
 public:
+
+    typedef enum{
+        DEEP_SLEEP = LMP91000_OP_MODE_DEEP_SLEEP,
+        TWO_LEAD_GALVANIC = LMP91000_OP_MODE_GALVANIC,
+        STANDBY = LMP91000_OP_MODE_STANDBY,
+        THREE_LEAD_AMPEROMETRIC = LMP91000_OP_MODE_AMPEROMETRIC,
+        TEMP_MEASURE_TIA_OFF = LMP91000_OP_MODE_TIA_OFF,
+        TEMP_MEASURE_TIA_ON = LMP91000_OP_MODE_TIA_ON;
+
+    } OP_MODES;
     
     //CONSTRUCTORS
     LMP91000(); //tested
@@ -194,6 +206,7 @@ public:
     void setThreeLead() const;
     void measureCell() const;
     void getTemp() const;
+    void setTempReadMode(uint8_t) const;
     double getTemp(uint8_t sensor, double adc_ref, uint8_t adc_bits) const;
     
     //reading the output of the LMP91000
