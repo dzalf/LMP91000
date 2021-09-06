@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "PstatMUXd",
+			"path": "..\\..\\..\\Ivory Circuits\\Firmware and Test Codes\\Potentiostat\\PstatMUXd"
+		}
+	],
+	"settings": {}
+}
