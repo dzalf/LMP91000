@@ -3,7 +3,6 @@
  AUTHOR:	Orlando S. Hoilett
  EMAIL:     ohoilett@purdue.edu
  
- 
  Please see .cpp file for extended descriptions, instructions, and version updates
  
  

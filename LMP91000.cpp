@@ -63,7 +63,6 @@
  
  * DISCLAIMER
  Copyright (c) 2016 Linnes Lab, Purdue University, West Lafayette, IN, USA
- 
  */
 
 #include "LMP91000.h"
@@ -71,13 +70,13 @@
 /************CONSTRUCTORS*****************/
 
 //DEFAULT CONSTRUCTOR
-//Initializes object
 LMP91000::LMP91000() {
     // Set some common defaul values
     this->_ADC_Vref = 5.0;
     this->_ADC_Bits = 10;
 }
 
+// Overloaded constructor
 LMP91000::LMP91000(double adc_vref, uint8_t adc_bits) {
     this->_ADC_Vref = adc_vref;
     this->_ADC_Bits = adc_bits;
