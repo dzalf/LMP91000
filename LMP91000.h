@@ -42,7 +42,7 @@
 
 #warning "This is a work in progress. Custom clone of the LMP91000 library..." // dzalf 05/09/2021
 
-#define DEBUG false
+#define DEBUG false                 // Debugging flag for serial prints
 
 const float TEMP_INTERCEPT = 1562.2f;
 const float TEMPSLOPE = -8.16f;

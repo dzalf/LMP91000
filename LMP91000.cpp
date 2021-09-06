@@ -45,6 +45,7 @@
  *          6. Removed unnecessary parameters (adc_ref and adc_bits) from getVoltage/getOutput/getCurrent methods, since these can be internally held by the instance of the class
  *          7. Improved comments following some conventions and standards :https://developer.lsst.io/cpp/api-docs.html
  *          8. Wire.begin() was missing!
+ *          9. Corrected mistakes in the data size for reading temperature (passing an uint16_t to and uint8_t)
  
  * SOURCES
  * Some code snippets were taken from
