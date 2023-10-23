@@ -174,8 +174,8 @@ void LMP91000::disable() {
 //Default state is not ready.
 bool LMP91000::isReady() {
     uint8_t stat = this->readAFE(LMP91000_STATUS_REG);
-    Serial.print("Status reg says:");
-    Serial.println(stat);
+    //Serial.print("Status reg says:");
+    //Serial.println(stat);
     return stat == LMP91000_READY;
 }
 
@@ -252,10 +252,7 @@ void LMP91000::setGain(uint8_t user_gain) {
 }
 
 double LMP91000::getGain() {
-    if (_gain_index == 0)
-        return _gain_index;
-    else
-        return TIA_GAIN[_gain_index];
+        return TIA_GAIN[_gain_index-1];
 }
 
 //void LMP91000::setRLoad(uint8_t load) const
@@ -275,6 +272,7 @@ double LMP91000::getGain() {
 //7.6.3 TIACN -- TIA Control Register (Address 0x10)" of the datasheet for more
 //information.
 void LMP91000::setRLoad(uint8_t load) {
+    _load_index = load;
     this->unlock();
     uint8_t data = this->readAFE(LMP91000_TIACN_REG);
     data &= ~3;    //clears 0th and 1st bits
@@ -295,6 +293,11 @@ void LMP91000::setADCReference(float volts) {
 */
 void LMP91000::setADCBits(uint8_t adc_bits) {
     this->_ADC_Bits = adc_bits;
+}
+
+
+void LMP91000::setReferenceVoltage(float volts){
+    this->_AFE_Vref = volts;
 }
 
 //void LMP91000::setRefSource(uint8_t source) const
@@ -370,6 +373,7 @@ void LMP91000::setExtRefSource() {
 //Please consult page 22, "Section 7.6.4 REFCN -- Reference Control Register
 //(Address 0x11)" of the datasheet for more information.
 void LMP91000::setIntZ(uint8_t intZ) {
+    
     _zero_index = intZ;
 
     unlock();  //unlocks the REFCN register for "this->writeAFE" mode
@@ -411,6 +415,7 @@ void LMP91000::setPosBias() {
 
 //void LMP91000::setBias(uint8_t bias) const
 void LMP91000::setBias(uint8_t bias) {
+    _bias_index = bias;
     unlock();
     uint8_t data = this->readAFE(LMP91000_REFCN_REG);
     data &= ~(0x0F);  //clear the first four bits so I can bit Or in the next step
@@ -610,6 +615,7 @@ double LMP91000::getTemp(uint16_t raw_sensor_value) {
 //
 //Uses analogRead() return the output of the LMP91000.
 uint16_t LMP91000::getOutput(uint8_t sensor) {
+    //delay(10);
     return analogRead(sensor);
 }
 
@@ -667,7 +673,7 @@ double LMP91000::getVoltage(uint16_t adcVal) {
 //This method calculates the current at the working electrode by reading in the
 //voltage at the output of LMP91000 and dividing by the value of the gain resistor.
 double LMP91000::getCurrent(uint16_t adcVal) {
-    return (getVoltage(adcVal) - (_ADC_Vref * TIA_ZERO[_zero_index])) / TIA_GAIN[_gain_index - 1];
+    return (getVoltage(adcVal) - getIntZ()*_AFE_Vref) / (getGain() - TIA_RLOAD[_load_index]);
 }
 
 //double MiniStat::getCurrent(uint16_t adcVal, double _ADC_Vref, uint8_t adc_bits,

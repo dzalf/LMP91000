@@ -122,6 +122,7 @@ const double TIA_BIAS[] = {0, 0.01, 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14,
                            0.16, 0.18, 0.2, 0.22, 0.24};
 const uint8_t NUM_TIA_BIAS = 14;
 const double TIA_ZERO[] = {0.2, 0.5, 0.67};
+const double TIA_RLOAD[] ={10.0,33.0,50.0,100.0};
 
 class LMP91000 {
    public:
@@ -144,6 +145,10 @@ class LMP91000 {
 
     // set ADC reference voltage
     void setADCReference(float volts);
+
+    // set AFE reference voltage
+
+    void setReferenceVoltage(float volts);
 
     // set number of bits fro our MCU's ADC
     void setADCBits(uint8_t adc_bits);
@@ -228,9 +233,13 @@ class LMP91000 {
     uint8_t _MENB_Pin;  //IO pin for enabling and disabling I2C commands
     uint8_t _gain_index;
     uint8_t _zero_index;
+    uint8_t _bias_index;
+    uint8_t _load_index;
 
-    float _ADC_Vref;
+    double _ADC_Vref;
     uint8_t _ADC_Bits;
+
+    double _AFE_Vref;
 
     //reads and writes to LMP91000 via I2C
     void writeAFE(uint8_t reg, uint8_t data);
